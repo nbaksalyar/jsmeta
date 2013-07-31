@@ -1,0 +1,66 @@
+JSMeta
+======
+
+Data modeling tool for JavaScript projects.
+
+Tour
+----
+
+Allows simple data model definitions by using simple DSL:
+
+	var AnimalFrame = dsl.Enum(['dog', 'cat']);
+
+	var PetFrame = dsl.Frame({
+		name: dsl.String,
+		animal: AnimalFrame
+	});
+
+	var DataModel = {
+		age: dsl.Number.withGuard(function (a) {
+			return a > 0 && a < 99;
+		}),
+		name: dsl.String.ofLength(1, 50),
+		pets: dsl.SetOf(PetFrame).nonEmpty()
+	};
+
+Understands JSON schemas:
+
+	...
+
+Speaks JSON:
+
+	...
+
+Speaks ETF (Erlang Term Format):
+
+	...
+
+Validates data:
+
+	...
+
+Data mapping:
+
+	var frameA = {
+		name: dsl.String.ofLength(1, 50)
+	};
+
+	var frameB = {
+		firstName: dsl.String.ofLength(1, 100)
+	};
+
+	var rules = {
+		name: firstName
+	};
+
+	jsmeta.map(frameA, frameB, rules);
+
+Integrates well with Backbone.js (and other MVC frameworks):
+
+	var JSMetaModel = Backbone.Model.extend({
+		parse: function (data) {
+			return jsmeta.parse(data, this.dataModel);
+		}
+	});
+
+Supports Node.js. RequireJS compatible.
